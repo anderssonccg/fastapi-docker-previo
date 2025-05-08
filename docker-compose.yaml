@@ -25,6 +25,9 @@ services:
       - pgdata:/var/lib/postgresql/data
     networks:
       - redlocal
+      
+volumes: 
+  pgdata:
 
 networks:
   redlocal:
