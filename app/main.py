@@ -1,6 +1,17 @@
 from fastapi import FastAPI, Request
+from sqlmodel import create_engine, Session, select
+from models import Note, NoteCreate
 import json
 import os
+
+user = os.getenv("DB_USER")
+password = os.getenv("DB_PASS")
+host = os.getenv("DB_HOST")
+database = os.getenv("DB_NAME")
+port = os.getenv("DB_PORT")
+url = f"postgresql+psycopg2://{user}:{password}@{host}:{port}/{database}"
+
+engine = create_engine(url, echo=True)
 
 app = FastAPI()
 
@@ -15,12 +26,15 @@ async def root():
 
 @app.get("/notes")
 async def get_notes():
-
-    # TODO: Implementar
-    return {"notes": []}
+    with Session(engine) as session:
+        notes = session.exec(select(Note)).all()
+    return {"notes": notes}
 
 
 @app.post("/notes")
-async def create_note(request: Request):
-    # TODO: Implementar
-    return {"message": "Note created successfully!"}
+async def create_note(note: NoteCreate):
+    with Session(engine) as session:
+        note_create= Note.model_validate(note)
+        session.add(note_create)
+        session.commit()
+        session.refresh(note_create)
