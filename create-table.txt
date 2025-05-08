@@ -1,1 +1,1 @@
-docker compose exec db psql -U anderssonccg -d testdb -c "CREATE TABLE IF NOT EXISTS notas (id SERIAL PRIMARY KEY, title TEXT, content TEXT);"
+docker compose exec db psql -U anderssonccg -d testdb -c "CREATE TABLE IF NOT EXISTS note (id SERIAL PRIMARY KEY, title TEXT, content TEXT);"

@@ -1,6 +1,6 @@
 from fastapi import FastAPI, Request
 from sqlmodel import create_engine, Session, select
-from models import Note, NoteCreate
+from .models import Note, NoteCreate
 import json
 import os
 
